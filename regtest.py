@@ -69,7 +69,7 @@ def find_build_dirs(tests):
 
     return build_dirs
 
-def cmake_setup(suite):
+def cmake_setup(suite, reuse_build=False):
     "Setup for cmake"
 
     #--------------------------------------------------------------------------
@@ -79,11 +79,17 @@ def cmake_setup(suite):
     # False: use directly build-tree
     install = False
 
-    # Configure Amrex
-    builddir, installdir = suite.cmake_config(name="AMReX",
-                                              path=suite.amrex_dir,
-                                              configOpts=suite.amrex_cmake_opts,
-                                              install=install)
+    if not reuse_build:
+        # Configure Amrex
+        builddir, installdir = suite.cmake_config(name="AMReX",
+                                                  path=suite.amrex_dir,
+                                                  configOpts=suite.amrex_cmake_opts,
+                                                  install=install)
+    else:
+        # Reuse existing build directories
+        builddir = suite.amrex_dir + 'builddir'
+        installdir = suite.amrex_dir + 'installdir' if install else None
+
     if install:
         suite.amrex_install_dir = installdir
         target = 'install'
@@ -110,11 +116,15 @@ def cmake_setup(suite):
     # Configure main suite with CMake: build will be performed only when
     # needed for tests
     #--------------------------------------------------------------------------
-    builddir, installdir = suite.cmake_config(name=suite.suiteName,
-                                              path=suite.source_dir,
-                                              configOpts=suite.source_cmake_opts,
-                                              install=0,
-                                              env=env)
+    if not reuse_build:
+        builddir, installdir = suite.cmake_config(name=suite.suiteName,
+                                                  path=suite.source_dir,
+                                                  configOpts=suite.source_cmake_opts,
+                                                  install=0,
+                                                  env=env)
+    else:
+        # Reuse existing build directory
+        builddir = suite.source_dir + 'builddir'
 
     suite.source_build_dir = builddir
 
@@ -481,7 +491,7 @@ def test_suite(argv):
     # Setup Cmake if needed
     #--------------------------------------------------------------------------
     if suite.useCmake and not suite.isSuperbuild:
-        cmake_setup(suite)
+        cmake_setup(suite, reuse_build=args.reuse_build)
 
 
     #--------------------------------------------------------------------------
@@ -542,7 +552,7 @@ def test_suite(argv):
 
         if suite.sourceTree == "C_Src" or test.testSrcTree == "C_Src":
             if suite.useCmake:
-                comp_string, rc = suite.build_test_cmake(test=test, outfile=coutfile)
+                comp_string, rc = suite.build_test_cmake(test=test, outfile=coutfile, reuse_build=args.reuse_build)
             else:
                 comp_string, rc = suite.build_c(test=test, outfile=coutfile)
 

@@ -1262,7 +1262,7 @@ class Suite:
 
 
 
-    def build_test_cmake(self, test, opts="",  outfile=None):
+    def build_test_cmake(self, test, opts="",  outfile=None, reuse_build=False):
         """ build an executable with CMake build system """
 
         env = {"AMReX_ROOT":self.amrex_install_dir}
@@ -1270,7 +1270,7 @@ class Suite:
         # super-builds always need a configure now, all other builds might
         # add additional CMake config options and re-configure on existing configured
         # build directory, if additional build cmakeSetupOpts are set
-        if self.isSuperbuild or test.cmakeSetupOpts != "":
+        if not reuse_build and (self.isSuperbuild or test.cmakeSetupOpts != ""):
             builddir, installdir = self.cmake_config(
                 name=test.name,
                 path=self.source_dir,

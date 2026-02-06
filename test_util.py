@@ -399,6 +399,8 @@ def get_args(arg_string=None):
                                help="remove executable in test directory after each passed test")
     suite_options.add_argument("--keep_build", action="store_true",
                                help="keep build directories after test suite completion")
+    suite_options.add_argument("--reuse_build", action="store_true",
+                               help="reuse existing CMake build configuration and skip cmake config step")
 
     comp_options = parser.add_argument_group("comparison options",
                                              "options that control how the comparisons are done")
