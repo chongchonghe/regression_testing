@@ -419,7 +419,8 @@ class Suite:
         self.useCmake = 0
         self.isSuperbuild = 0
         self.use_ctools = 1
-        
+        self.build_dir_name = args.build_name
+
         self.reportCoverage = args.with_coverage
 
         # set automatically
@@ -1146,7 +1147,7 @@ class Suite:
         self.log.indent()
 
         # Setup dir names
-        builddir   = path + 'builddir'
+        builddir   = path + self.build_dir_name
         if install:
             installdir = path + 'installdir'
         else:
@@ -1214,7 +1215,7 @@ class Suite:
         self.log.indent()
 
         # Setup dir names
-        builddir   = path + 'builddir'
+        builddir   = path + self.build_dir_name
         installdir = path + 'installdir'
 
         # remove build and installation directories if present

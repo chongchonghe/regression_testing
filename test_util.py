@@ -401,6 +401,8 @@ def get_args(arg_string=None):
                                help="keep build directories after test suite completion")
     suite_options.add_argument("--reuse_build", action="store_true",
                                help="reuse existing CMake build configuration and skip cmake config step")
+    suite_options.add_argument("--build_name", type=str, default="builddir", metavar="dirname",
+                               help="name of the CMake build directory (default: builddir)")
 
     comp_options = parser.add_argument_group("comparison options",
                                              "options that control how the comparisons are done")

@@ -87,7 +87,7 @@ def cmake_setup(suite, reuse_build=False):
                                                   install=install)
     else:
         # Reuse existing build directories
-        builddir = suite.amrex_dir + 'builddir'
+        builddir = suite.amrex_dir + suite.build_dir_name
         installdir = suite.amrex_dir + 'installdir' if install else None
 
     if install:
@@ -124,7 +124,7 @@ def cmake_setup(suite, reuse_build=False):
                                                   env=env)
     else:
         # Reuse existing build directory
-        builddir = suite.source_dir + 'builddir'
+        builddir = suite.source_dir + suite.build_dir_name
 
     suite.source_build_dir = builddir
 
