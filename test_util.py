@@ -397,6 +397,8 @@ def get_args(arg_string=None):
                                help="remove individual test directory after each passed test")
     suite_options.add_argument("--delete_exe", action="store_true",
                                help="remove executable in test directory after each passed test")
+    suite_options.add_argument("--keep_build", action="store_true",
+                               help="keep build directories after test suite completion")
 
     comp_options = parser.add_argument_group("comparison options",
                                              "options that control how the comparisons are done")

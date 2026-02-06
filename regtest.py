@@ -1254,7 +1254,7 @@ def test_suite(argv):
     #--------------------------------------------------------------------------
     # Clean Cmake build and install directories if needed
     #--------------------------------------------------------------------------
-    if suite.useCmake:
+    if suite.useCmake and not args.keep_build:
         suite.cmake_clean("AMReX", suite.amrex_dir)
         suite.cmake_clean(suite.suiteName, suite.source_dir)
 
