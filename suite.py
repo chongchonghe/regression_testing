@@ -1173,7 +1173,12 @@ class Suite:
             os.mkdir(installdir)
 
         # Logfile
-        coutfile = f'{self.full_test_dir}{name}.cmake.log'
+        # Use generic 'cmake.log' for test configurations (since we only configure once)
+        # Keep specific names for AMReX and suite configurations
+        if test is not None:
+            coutfile = f'{self.full_test_dir}cmake.log'
+        else:
+            coutfile = f'{self.full_test_dir}{name}.cmake.log'
 
         # Run cmake
         cmd = f'{self.cmake} {configOpts} -S {path} -B {builddir} '
